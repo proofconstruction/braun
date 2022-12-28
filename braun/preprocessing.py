@@ -1,11 +1,13 @@
+from pathlib import Path
+
 import cv2
 import numpy as np
 
 
 # A utility function for preprocessing
-def grayscale_and_normalize(image_path):
+def grayscale_and_normalize(image_path: Path):
     # read the images in as f32 arrays, for increased precision
-    img = cv2.imread(image_path).astype(np.float32)
+    img = cv2.imread(image_path.as_posix()).astype(np.float32)
 
     # resize to correct dimensions
     img = cv2.resize(img, (540, 420))
