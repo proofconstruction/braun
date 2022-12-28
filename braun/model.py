@@ -10,7 +10,6 @@ from keras.layers import MaxPooling2D
 from keras.layers import UpSampling2D
 from keras.models import Model
 from tensorflow import keras
-from tensorflow.keras.merge import concatenate
 
 
 def encode(
