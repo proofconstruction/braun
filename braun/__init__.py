@@ -22,5 +22,5 @@ __all__ = [
     "plot_training_vs_groundtruth_images",
     "plot_traininginstance_loss_and_error",
     "training_split",
-    "generate_training_instances"
-    ]
+    "generate_training_instances",
+]

@@ -9,25 +9,23 @@ import requests
 
 from braun.preprocessing import grayscale_and_normalize
 
+base_path = Path("/content/")
+train_img_path = base_path / "training_images/"
+val_img_path = base_path / "validation_images/"
+gt_img_path = base_path / "groundtruth_images/"
+
 
 def download_and_extract_noisyoffice():
     # download NoisyOffice
     zip_file_url = "https://archive.ics.uci.edu/ml/machine-learning-databases/00318/NoisyOffice.zip"
-    extract_dir = "/content/"
     request_data = requests.get(zip_file_url, stream=True)
     noisy_zip = zipfile.ZipFile(io.BytesIO(request_data.content))
-    noisy_zip.extractall(path=extract_dir)
+    noisy_zip.extractall(path=base_path)
 
 
 def build_directories_and_copy_noisy_data():
     # create directories for storing data
-    base_dir = Path("/content/")
-
-    training_images_dir = base_dir / "training_images"
-    groundtruth_images_dir = base_dir / "groundtruth_images"
-    validation_images_dir = base_dir / "validation_images"
-
-    for path in [training_images_dir, groundtruth_images_dir, validation_images_dir]:
+    for path in [train_img_path, gt_img_path, val_img_path]:
         path.mkdir()
 
     # copy NoisyOffice data where we need
@@ -37,15 +35,15 @@ def build_directories_and_copy_noisy_data():
 
     for groundtruth_image in sorted(os.listdir(cleanpath)):
         if os.path.isfile(cleanpath / groundtruth_image):
-            shutil.copyfile(cleanpath / groundtruth_image, groundtruth_images_dir / groundtruth_image)
+            shutil.copyfile(cleanpath / groundtruth_image, gt_img_path / groundtruth_image)
 
     for training_image in sorted(os.listdir(trainpath)):
         if os.path.isfile(trainpath / training_image):
-            shutil.copyfile(trainpath / training_image, training_images_dir / training_image)
+            shutil.copyfile(trainpath / training_image, train_img_path / training_image)
 
     for validation_image in sorted(os.listdir(valpath)):
         if os.path.isfile(valpath / validation_image):
-            shutil.copyfile(valpath / validation_image, validation_images_dir / validation_image)
+            shutil.copyfile(valpath / validation_image, val_img_path / validation_image)
 
 
 def file_setup():
@@ -55,35 +53,19 @@ def file_setup():
 
 def generate_imageset_names(groundtruth_duplication_factor: int = 4):
 
-    train_img_path = Path('/content/training_images/')
-    val_img_path = Path('/content/validation_images/')
-    gt_img_path = Path('/content/groundtruth_images/')
-
     # filenames lists
     training_images_names = sorted(
-        [
-            train_img_path + filename
-            for filename in train_img_path.iterdir()
-            if filename.is_file()
-        ],
+        [train_img_path / filename for filename in train_img_path.iterdir() if filename.is_file()],
     )
 
     validation_images_names = sorted(
-        [
-            val_img_path + filename
-            for filename in val_img_path.iterdir()
-            if filename.is_file()
-        ],
+        [val_img_path / filename for filename in val_img_path.iterdir() if filename.is_file()],
     )
 
     # duplicate the ground truths 4x; we only have 18 unique groundtruth images and need 72
     groundtruth_images_names = []
     for groundtruth_image in sorted(
-        [
-            gt_img_path + filename
-            for filename in gt_img_path.iterdir()
-            if filename.is_file()
-        ],
+        [gt_img_path / filename for filename in gt_img_path.iterdir() if filename.is_file()],
     ):
         for _ in range(groundtruth_duplication_factor):
             groundtruth_images_names.append(groundtruth_image)
