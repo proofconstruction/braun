@@ -53,17 +53,12 @@ def file_setup():
     build_directories_and_copy_noisy_data()
 
 
-def generate_imageset_names(
-    training_images_dir: Path,
-    groundtruth_images_dir: Path,
-    validation_images_dir: Path,
-    groundtruth_duplication_factor: int = 4,
-):
+def generate_imageset_names(groundtruth_duplication_factor: int = 4):
     # filenames lists
     training_images_names = sorted(
         [
             "/content/training_images/" + filename
-            for filename in Path(training_images_dir).iterdir()
+            for filename in Path("/content/training_images/").iterdir()
             if filename.is_file()
         ],
     )
@@ -73,7 +68,7 @@ def generate_imageset_names(
     validation_images_names = sorted(
         [
             "/content/validation_images/" + filename
-            for filename in Path(validation_images_dir).iterdir()
+            for filename in Path("/content/validation_images/").iterdir()
             if filename.is_file()
         ],
     )
@@ -82,7 +77,7 @@ def generate_imageset_names(
     for groundtruth_image in sorted(
         [
             "/content/groundtruth_images/" + filename
-            for filename in Path(groundtruth_images_dir).iterdir()
+            for filename in Path("/content/groundtruth_images/").iterdir()
             if filename.is_file()
         ],
     ):
