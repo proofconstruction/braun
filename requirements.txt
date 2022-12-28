@@ -1,0 +1,4 @@
+augraphy
+GitPython
+matplotlib
+tensorflow
