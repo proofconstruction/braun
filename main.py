@@ -52,15 +52,11 @@ if __name__ == "__main__":
 
     # split datasets
     training_images_arr, training_images_count, groundtruth_images_arr, groundtruth_images_count = training_split(
-        training_images,
-        groundtruth_images,
-    )
-    (
-        training_images_augraphy_arr,
-        training_images_augraphy_count,
-        groundtruth_images_arr,
-        groundtruth_images_count,
-    ) = training_split(training_images_augraphy, groundtruth_images)
+        training_images_arr,
+        groundtruth_images_arr)
+
+    training_images_augraphy_arr, training_images_augraphy_count, groundtruth_images_arr, groundtruth_images_count = training_split(
+        training_images_augraphy, groundtruth_images)
 
     # build models
     convolution_kernel_shape = (3, 3)

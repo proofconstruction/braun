@@ -54,30 +54,34 @@ def file_setup():
 
 
 def generate_imageset_names(groundtruth_duplication_factor: int = 4):
+
+    train_img_path = Path('/content/training_images/')
+    val_img_path = Path('/content/validation_images/')
+    gt_img_path = Path('/content/groundtruth_images/')
+
     # filenames lists
     training_images_names = sorted(
         [
-            "/content/training_images/" + filename
-            for filename in Path("/content/training_images/").iterdir()
+            train_img_path + filename
+            for filename in train_img_path.iterdir()
             if filename.is_file()
         ],
     )
 
-    groundtruth_images_names = []
-
     validation_images_names = sorted(
         [
-            "/content/validation_images/" + filename
-            for filename in Path("/content/validation_images/").iterdir()
+            val_img_path + filename
+            for filename in val_img_path.iterdir()
             if filename.is_file()
         ],
     )
 
     # duplicate the ground truths 4x; we only have 18 unique groundtruth images and need 72
+    groundtruth_images_names = []
     for groundtruth_image in sorted(
         [
-            "/content/groundtruth_images/" + filename
-            for filename in Path("/content/groundtruth_images/").iterdir()
+            gt_img_path + filename
+            for filename in gt_img_path.iterdir()
             if filename.is_file()
         ],
     ):
