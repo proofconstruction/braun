@@ -31,18 +31,21 @@ def build_directories_and_copy_noisy_data():
         path.mkdir()
 
     # copy NoisyOffice data where we need
-    cleanpath = base_dir / "/NoisyOffice/SimulatedNoisyOffice/clean_images_grayscale"
-    trainpath = base_dir / "/NoisyOffice/SimulatedNoisyOffice/simulated_noisy_images_grayscale"
-    valpath = base_dir / "/NoisyOffice/RealNoisyOffice/real_noisy_images_grayscale"
+    cleanpath = base_dir / "NoisyOffice/SimulatedNoisyOffice/clean_images_grayscale"
+    trainpath = base_dir / "NoisyOffice/SimulatedNoisyOffice/simulated_noisy_images_grayscale"
+    valpath = base_dir / "NoisyOffice/RealNoisyOffice/real_noisy_images_grayscale"
 
     for groundtruth_image in sorted(os.listdir(cleanpath)):
-        shutil.copyfile(groundtruth_image, groundtruth_images_dir)
+        if os.path.isfile(cleanpath / groundtruth_image):
+            shutil.copyfile(cleanpath / groundtruth_image, groundtruth_images_dir / groundtruth_image)
 
     for training_image in sorted(os.listdir(trainpath)):
-        shutil.copyfile(training_image, training_images_dir)
+        if os.path.isfile(trainpath / training_image):
+            shutil.copyfile(trainpath / training_image, training_images_dir / training_image)
 
     for validation_image in sorted(os.listdir(valpath)):
-        shutil.copyfile(validation_image, validation_images_dir)
+        if os.path.isfile(valpath / validation_image):
+            shutil.copyfile(valpath / validation_image, validation_images_dir / validation_image)
 
 
 def file_setup():
