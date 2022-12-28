@@ -13,7 +13,7 @@ from braun.preprocessing import grayscale_and_normalize
 def download_and_extract_noisyoffice():
     # download NoisyOffice
     zip_file_url = "https://archive.ics.uci.edu/ml/machine-learning-databases/00318/NoisyOffice.zip"
-    extract_dir = "/content/NoisyOffice"
+    extract_dir = "/content/"
     request_data = requests.get(zip_file_url, stream=True)
     noisy_zip = zipfile.ZipFile(io.BytesIO(request_data.content))
     noisy_zip.extractall(path=extract_dir)
