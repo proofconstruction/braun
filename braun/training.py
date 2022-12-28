@@ -3,7 +3,7 @@ from typing import List
 
 from tensorflow.keras.models import Model
 
-from model import convnet_denoiser
+from braun.model import convnet_denoiser
 
 
 def build_SML_models(convolution_kernel_shape, loss_function):

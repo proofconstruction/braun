@@ -7,7 +7,7 @@ from pathlib import Path
 
 import requests
 
-from preprocessing import grayscale_and_normalize
+from braun.preprocessing import grayscale_and_normalize
 
 
 def download_and_extract_noisyoffice():

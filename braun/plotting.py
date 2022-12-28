@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-from training import TrainingInstance
+from braun.training import TrainingInstance
 
 
 def plot_training_vs_groundtruth_images(
