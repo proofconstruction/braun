@@ -6,10 +6,14 @@ import augraphy
 import cv2
 from git import Repo
 
+shabby_pipeline = None
+
 
 def get_shabby_pipeline():
     Repo.clone_from("https://github.com/sparkfish/shabby-pages", "shabby")
     from shabby.daily_pipeline import get_pipeline
+
+    shabby_pipeline = get_pipeline
 
 
 def apply_pipeline(enumerate_pair):
@@ -21,7 +25,7 @@ def apply_pipeline(enumerate_pair):
     print(f"Processing {output_filename}")
 
     image = cv2.imread(input_filename.as_posix())
-    pipeline = get_pipeline()
+    pipeline = shabby_pipeline()
     augmented = pipeline.augment(image)["output"]
 
     cv2.imwrite(output_filename.as_posix(), augmented)
