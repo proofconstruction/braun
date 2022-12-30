@@ -1,4 +1,3 @@
 augraphy
-GitPython
 matplotlib
 tensorflow
