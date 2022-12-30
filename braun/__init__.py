@@ -20,7 +20,6 @@ __all__ = [
     "generate_training_images_augraphy_names",
     "generate_training_instances",
     "get_pipeline",
-    "get_shabby_pipeline",
     "plot_training_vs_groundtruth_images",
     "plot_traininginstance_loss_and_error",
     "training_split",
