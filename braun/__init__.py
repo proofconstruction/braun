@@ -3,7 +3,6 @@ from braun.data_setup import generate_and_preprocess_imagesets
 from braun.data_setup import generate_imageset_names
 from braun.gen_augraphy_dataset import generate_training_images_augraphy
 from braun.gen_augraphy_dataset import generate_training_images_augraphy_names
-from braun.gen_augraphy_dataset import get_shabby_pipeline
 from braun.plotting import plot_training_vs_groundtruth_images
 from braun.plotting import plot_traininginstance_loss_and_error
 from braun.shabby_pipeline import get_pipeline
