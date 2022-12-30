@@ -27,17 +27,17 @@ def encode(
     c8 = Conv2D(128, convolution_kernel_shape, activation="relu", padding="same")(c7)
 
     if model_size == "small":
-        return input_tensor.add(c2)
+        return c2(input_tensor)
     elif model_size == "medium":
-        return input_tensor.add(c4)
+        return c4(input_tensor)
     else:
-        return input_tensor.add(c8)
+        return c8(input_tensor)
 
 
 def downsample_dropout(input_tensor, dropout_rate: float = 0.5):
     downsample = MaxPooling2D((2, 2), padding="same")
     dropout = Dropout(dropout_rate)(downsample)
-    return input_tensor.add(dropout)
+    return dropout(input_tensor)
 
 
 def decode(
@@ -55,15 +55,16 @@ def decode(
     c8 = Conv2D(16, convolution_kernel_shape, activation="relu", padding="same")(c7)
 
     if model_size == "small":
-        return input_tensor.add(c2)
+        return c2(input_tensor)
     elif model_size == "medium":
-        return input_tensor.add(c4)
+        return c4(input_tensor)
     else:
-        return input_tensor.add(c8)
+        return c8(input_tensor)
 
 
 def upsample(input_tensor):
-    return input_tensor.add(UpSampling2D((2, 2)))
+    up = UpSampling2D((2, 2))
+    return up(input_tensor)
 
 
 def convnet_denoiser(
@@ -78,6 +79,7 @@ def convnet_denoiser(
     model = downsample_dropout(model)
     model = decode(model, convolution_kernel_shape, model_size)
     model = upsample(model)
-    model = model.add(Conv2D(1, (3, 3), activation="sigmoid", padding="same"))
+    final_conv = Conv2D(1, (3, 3), activation="sigmoid", padding="same")
+    model = final_conv(model)
 
     return model.compile(optimizer="adam", loss_function=loss_function, metrics=loss_function)
