@@ -73,7 +73,7 @@ def convnet_denoiser(
 ):
     # build and compile the model
     # I wish we had a nice monad here
-    model = tf.keras.Input(shape=(540, 420))
+    model = tf.keras.Input(shape=(540, 420, 1))
     model = encode(model, convolution_kernel_shape, model_size)
     model = downsample_dropout(model)
     model = decode(model, convolution_kernel_shape, model_size)
