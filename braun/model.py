@@ -5,7 +5,7 @@ import tensorflow as tf
 from keras.layers import BatchNormalization
 from keras.layers import Conv2D
 from keras.layers import Dropout
-from keras.layers import InputLayer
+from keras.layers import Input
 from keras.layers import MaxPooling2D
 from keras.layers import UpSampling2D
 from keras.models import Model
@@ -73,7 +73,7 @@ def convnet_denoiser(
 ):
     # build and compile the model
     # I wish we had a nice monad here
-    model = tf.keras.Sequential()
+    model = tf.keras.Input(shape=(540, 420))
     model = encode(model, convolution_kernel_shape, model_size)
     model = downsample_dropout(model)
     model = decode(model, convolution_kernel_shape, model_size)
