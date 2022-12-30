@@ -4,7 +4,8 @@ from pathlib import Path
 
 import augraphy
 import cv2
-from shabby_pipeline import get_pipeline
+
+from braun.shabby_pipeline import get_pipeline
 
 
 def apply_pipeline(quad):
