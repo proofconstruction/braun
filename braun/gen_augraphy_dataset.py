@@ -25,7 +25,7 @@ def generate_enumerated_quads():
     output_path = Path("/content/training_images_augraphy")
     input_path = Path("/content/groundtruth_images")
     input_filenames = [input_path / name for name in sorted(os.listdir(input_path))]
-    pipeline = AugraphyPipeline([], [], [BadPhotoCopy(p=0.75), PencilScribbles(p=0.75)])
+    pipeline = augraphy.AugraphyPipeline([], [], [BadPhotoCopy(p=0.75), PencilScribbles(p=0.75)])
     return [(i, pipeline, input_filename, output_path) for i, input_filename in enumerate(input_filenames)]
 
 
