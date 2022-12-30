@@ -6,50 +6,44 @@ import augraphy
 import cv2
 from git import Repo
 
-shabby_pipeline = None
-
 
 def get_shabby_pipeline():
     Repo.clone_from("https://github.com/sparkfish/shabby-pages", "shabby")
     from shabby.daily_pipeline import get_pipeline
 
-    shabby_pipeline = get_pipeline
+    return get_pipeline
 
 
-def apply_pipeline(enumerate_pair):
-    i = 1 + (enumerate_pair[0] % 4)
-    input_filename = enumerate_pair[1][0]
-    output_path = enumerate_pair[1][1]
+def apply_pipeline(quad):
+    i = 1 + (quad[0] % 4)
+    pipeline = quad[1]()
+    input_filename = quad[2]
+    output_path = quad[3]
     output_filename = output_path / f"{input_filename.stem}-{i}-augraphy.png"
 
     print(f"Processing {output_filename}")
 
     image = cv2.imread(input_filename.as_posix())
-    pipeline = shabby_pipeline()
     augmented = pipeline.augment(image)["output"]
 
     cv2.imwrite(output_filename.as_posix(), augmented)
 
 
-def generate_enumerated_pairs():
+def generate_enumerated_quads():
     output_path = Path("/content/training_images_augraphy")
     input_path = Path("/content/groundtruth_images")
-    input_filenames = []
-
-    for name in sorted(os.listdir(input_path)):
-        for _ in range(4):
-            input_filenames.append(input_path / name)
-
-    return enumerate([(input_filename, output_path) for input_filename in input_filenames])
+    input_filenames = [input_path / name for name in sorted(os.listdir(input_path))]
+    pipeline = get_shabby_pipeline()
+    return [(i, pipeline, input_filename, output_path) for i, input_filename in enumerate(input_filenames)]
 
 
 def generate_training_images_augraphy():
     output_path = Path("/content/training_images_augraphy")
 
     # build the augraphy set
-    enumerate_pairs = generate_enumerated_pairs()
+    quads = generate_enumerated_quads()
     process_pool = Pool(os.cpu_count())
-    process_pool.map(apply_pipeline, enumerate_pairs)
+    process_pool.map(apply_pipeline, quads)
 
     # build the image list again
     training_images_augraphy = [
