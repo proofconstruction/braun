@@ -1,14 +1,6 @@
-from data_setup import file_setup
-from data_setup import generate_and_preprocess_imagesets
-from data_setup import generate_imageset_names
-from gen_augraphy_dataset import generate_training_images_augraphy
-from gen_augraphy_dataset import generate_training_images_augraphy_names
-from gen_augraphy_dataset import get_shabby_pipeline
 from keras.callbacks import EarlyStopping
-from plotting import plot_training_vs_groundtruth_images
-from plotting import plot_traininginstance_loss_and_error
-from split import training_split
-from training import generate_training_instances
+
+from braun import *
 
 if __name__ == "__main__":
 
@@ -25,9 +17,6 @@ if __name__ == "__main__":
         groundtruth_images_names,
         validation_images_names,
     )
-
-    # get the latest shabby pipeline
-    get_shabby_pipeline()
 
     # generate and import Augraphy data
     training_images_augraphy = generate_training_images_augraphy()
@@ -51,8 +40,8 @@ if __name__ == "__main__":
 
     # split datasets
     training_images_arr, training_images_count, groundtruth_images_arr, groundtruth_images_count = training_split(
-        training_images_arr,
-        groundtruth_images_arr,
+        training_images,
+        groundtruth_images,
     )
 
     (
