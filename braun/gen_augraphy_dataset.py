@@ -4,14 +4,7 @@ from pathlib import Path
 
 import augraphy
 import cv2
-from git import Repo
-
-
-def get_shabby_pipeline():
-    Repo.clone_from("https://github.com/sparkfish/shabby-pages", "shabby")
-    from shabby.daily_pipeline import get_pipeline
-
-    return get_pipeline
+from shabby_pipeline import get_pipeline
 
 
 def apply_pipeline(quad):
@@ -33,7 +26,7 @@ def generate_enumerated_quads():
     output_path = Path("/content/training_images_augraphy")
     input_path = Path("/content/groundtruth_images")
     input_filenames = [input_path / name for name in sorted(os.listdir(input_path))]
-    pipeline = get_shabby_pipeline()
+    pipeline = get_pipeline()
     return [(i, pipeline, input_filename, output_path) for i, input_filename in enumerate(input_filenames)]
 
 
