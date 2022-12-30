@@ -43,7 +43,7 @@ def generate_training_images_augraphy():
 
     # build the image list again
     training_images_augraphy = [
-        cv2.imread(output_path.as_posix() + filename) for filename in sorted(os.listdir(output_path))
+        cv2.imread((output_path / filename).as_posix()) for filename in sorted(os.listdir(output_path))
     ]
 
     return training_images_augraphy
