@@ -5,8 +5,6 @@ from pathlib import Path
 import augraphy
 import cv2
 
-from braun.shabby_pipeline import get_pipeline
-
 
 def apply_pipeline(quad):
     i = 1 + (quad[0] % 4)
@@ -27,7 +25,7 @@ def generate_enumerated_quads():
     output_path = Path("/content/training_images_augraphy")
     input_path = Path("/content/groundtruth_images")
     input_filenames = [input_path / name for name in sorted(os.listdir(input_path))]
-    pipeline = get_pipeline()
+    pipeline = AugraphyPipeline([], [], [BadPhotoCopy(p=0.75), PencilScribbles(p=0.75)])
     return [(i, pipeline, input_filename, output_path) for i, input_filename in enumerate(input_filenames)]
 
 
