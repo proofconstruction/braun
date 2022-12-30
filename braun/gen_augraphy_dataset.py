@@ -10,7 +10,7 @@ from augraphy import PencilScribbles
 
 def apply_pipeline(quad):
     i = 1 + (quad[0] % 4)
-    pipeline = quad[1]()
+    pipeline = quad[1]
     input_filename = quad[2]
     output_path = quad[3]
     output_filename = output_path / f"{input_filename.stem}-{i}-augraphy.png"
