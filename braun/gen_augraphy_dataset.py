@@ -47,6 +47,7 @@ def build_training_images_augraphy():
 def generate_training_images_augraphy():
     build_training_images_augraphy()
 
+    output_path = Path("/content/training_images_augraphy")
     # build the image list again
     training_images_augraphy = [
         cv2.imread((output_path / filename).as_posix()) for filename in sorted(os.listdir(output_path))
