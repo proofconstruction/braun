@@ -4,6 +4,8 @@ from pathlib import Path
 
 import cv2
 from augraphy import AugraphyPipeline
+from augraphy import BadPhotoCopy
+from augraphy import PencilScribbles
 
 
 def apply_pipeline(quad):
