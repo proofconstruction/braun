@@ -31,7 +31,7 @@ def generate_enumerated_quads():
     return [(i, pipeline, input_filename, output_path) for i, input_filename in enumerate(input_filenames)]
 
 
-def generate_training_images_augraphy():
+def build_training_images_augraphy():
     output_path = Path("/content/training_images_augraphy")
     if not output_path.exists():
         output_path.mkdir()
@@ -40,6 +40,12 @@ def generate_training_images_augraphy():
     quads = generate_enumerated_quads()
     process_pool = Pool(os.cpu_count())
     process_pool.map(apply_pipeline, quads)
+    process_pool.close()  # wait for all the processes in the map to exit
+    # then exit
+
+
+def generate_training_images_augraphy():
+    build_training_images_augraphy()
 
     # build the image list again
     training_images_augraphy = [
@@ -51,8 +57,8 @@ def generate_training_images_augraphy():
 
 def generate_training_images_augraphy_names():
     training_images_augraphy_dir = Path("/content/training_images_augraphy")
-    training_images_augraphy_names = [
-        filename for filename in training_images_augraphy_dir.iterdir() if filename.is_file()
-    ]
+    training_images_augraphy_names = sorted(
+        [filename for filename in training_images_augraphy_dir.iterdir() if filename.is_file()],
+    )
 
     return training_images_augraphy_names
