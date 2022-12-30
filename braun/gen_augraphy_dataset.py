@@ -33,6 +33,8 @@ def generate_enumerated_quads():
 
 def generate_training_images_augraphy():
     output_path = Path("/content/training_images_augraphy")
+    if not output_path.exists():
+        output_path.mkdir()
 
     # build the augraphy set
     quads = generate_enumerated_quads()
