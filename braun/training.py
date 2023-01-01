@@ -79,7 +79,6 @@ class ConvNetModelInstance:
         self.model = convnet_denoiser(
             convolution_kernel_shape,
             model_size,
-            loss_function,
         )
 
 
