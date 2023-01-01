@@ -6,21 +6,18 @@ from tensorflow.keras.models import Model
 from braun.model import convnet_denoiser
 
 
-def build_SML_models(convolution_kernel_shape, loss_function):
+def build_SML_models(convolution_kernel_shape):
     small = ConvNetModelInstance(
         convolution_kernel_shape,
         "small",
-        loss_function,
     )
     medium = ConvNetModelInstance(
         convolution_kernel_shape,
         "medium",
-        loss_function,
     )
     large = ConvNetModelInstance(
         convolution_kernel_shape,
         "large",
-        loss_function,
     )
     return small, medium, large
 
@@ -36,44 +33,38 @@ def generate_training_instances(
     callback,
 ):
     training_instances = []
-    for loss_function in [
-        "cosine_similarity",
-        "mean_absolute_error",
-        "mean_squared_error",
-    ]:
+    small, medium, large = build_SML_models(convolution_kernel_shape)
 
-        small, medium, large = build_SML_models(convolution_kernel_shape, loss_function)
+    for model_type in [small, medium, large]:
+        # augraphy instance
+        training_instances.append(
+            TrainingInstance(
+                model_type,
+                "augraphy",
+                callback,
+                training_images_augraphy_arr,
+                groundtruth_images_arr,
+                training_images_augraphy_count,
+                groundtruth_images_count,
+                600,
+                24,
+            ),
+        )
 
-        for model_type in [small, medium, large]:
-            # augraphy instance
-            training_instances.append(
-                TrainingInstance(
-                    model_type,
-                    "augraphy",
-                    callback,
-                    training_images_augraphy_arr,
-                    groundtruth_images_arr,
-                    training_images_augraphy_count,
-                    groundtruth_images_count,
-                    600,
-                    24,
-                ),
-            )
-
-            # noisyoffice instance
-            training_instances.append(
-                TrainingInstance(
-                    model_type,
-                    "noisyoffice",
-                    callback,
-                    training_images_arr,
-                    groundtruth_images_arr,
-                    training_images_count,
-                    groundtruth_images_count,
-                    600,
-                    24,
-                ),
-            )
+        # noisyoffice instance
+        training_instances.append(
+            TrainingInstance(
+                model_type,
+                "noisyoffice",
+                callback,
+                training_images_arr,
+                groundtruth_images_arr,
+                training_images_count,
+                groundtruth_images_count,
+                600,
+                24,
+            ),
+        )
 
     return training_instances
 
@@ -83,10 +74,7 @@ class ConvNetModelInstance:
         self,
         convolution_kernel_shape,
         model_size,
-        loss_function,
     ):
-        self.loss_function = loss_function
-        self.callback_function = loss_function
         self.model_size = model_size
         self.model = convnet_denoiser(
             convolution_kernel_shape,
@@ -111,7 +99,6 @@ class TrainingInstance(ConvNetModelInstance):
         self.model = model_instance.model
         self.training_provenance = training_provenance
         self.model_size = model_instance.model_size
-        self.loss_function = model_instance.loss_function
         self.training_images = training_images
         self.groundtruth_images = groundtruth_images
         self.training_images_count = training_images_count

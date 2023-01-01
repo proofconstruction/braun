@@ -74,11 +74,6 @@ def upsample(input_tensor):
 def convnet_denoiser(
     convolution_kernel_shape=Tuple[int, int],
     model_size: str = Union["small", "medium", "large"],
-    loss_function: str = Union[
-        "cosine_similarity",
-        "mean_absolute_error",
-        "mean_squared_error",
-    ],
 ):
     # build and compile the model
     # I wish we had a nice monad here
@@ -91,5 +86,5 @@ def convnet_denoiser(
     output = final_conv(l4)
     model = Model(inputs=input_layer, outputs=output)
     model.summary()
-    model.compile(optimizer="adam", loss=loss_function, metrics=[loss_function])
+    model.compile(optimizer="adam", loss="mean_squared_error", metrics=["mae"])
     return model
