@@ -17,7 +17,9 @@ def encode(
     convolution_kernel_shape=Tuple[int, int],
     model_size: str = Union["small", "medium", "large"],
 ):
-    c1 = Conv2D(16, convolution_kernel_shape, activation="relu", padding="same")(input_tensor)
+    c1 = Conv2D(16, convolution_kernel_shape, activation="relu", padding="same")(
+        input_tensor,
+    )
     c2 = Conv2D(16, convolution_kernel_shape, activation="relu", padding="same")(c1)
     c3 = Conv2D(32, convolution_kernel_shape, activation="relu", padding="same")(c2)
     c4 = Conv2D(32, convolution_kernel_shape, activation="relu", padding="same")(c3)
@@ -27,17 +29,17 @@ def encode(
     c8 = Conv2D(128, convolution_kernel_shape, activation="relu", padding="same")(c7)
 
     if model_size == "small":
-        return c2(input_tensor)
+        return c2
     elif model_size == "medium":
-        return c4(input_tensor)
+        return c4
     else:
-        return c8(input_tensor)
+        return c8
 
 
 def downsample_dropout(input_tensor, dropout_rate: float = 0.5):
-    downsample = MaxPooling2D((2, 2), padding="same")
+    downsample = MaxPooling2D((2, 2), padding="same")(input_tensor)
     dropout = Dropout(dropout_rate)(downsample)
-    return dropout(input_tensor)
+    return dropout
 
 
 def decode(
@@ -45,7 +47,9 @@ def decode(
     convolution_kernel_shape=Tuple[int, int],
     model_size: str = Union["small", "medium", "large"],
 ):
-    c1 = Conv2D(128, convolution_kernel_shape, activation="relu", padding="same")(input_tensor)
+    c1 = Conv2D(128, convolution_kernel_shape, activation="relu", padding="same")(
+        input_tensor,
+    )
     c2 = Conv2D(128, convolution_kernel_shape, activation="relu", padding="same")(c1)
     c3 = Conv2D(64, convolution_kernel_shape, activation="relu", padding="same")(c2)
     c4 = Conv2D(64, convolution_kernel_shape, activation="relu", padding="same")(c3)
@@ -55,11 +59,11 @@ def decode(
     c8 = Conv2D(16, convolution_kernel_shape, activation="relu", padding="same")(c7)
 
     if model_size == "small":
-        return c2(input_tensor)
+        return c2
     elif model_size == "medium":
-        return c4(input_tensor)
+        return c4
     else:
-        return c8(input_tensor)
+        return c8
 
 
 def upsample(input_tensor):
@@ -70,16 +74,22 @@ def upsample(input_tensor):
 def convnet_denoiser(
     convolution_kernel_shape=Tuple[int, int],
     model_size: str = Union["small", "medium", "large"],
-    loss_function: str = Union["cosine_similarity", "mean_absolute_error", "mean_squared_error"],
+    loss_function: str = Union[
+        "cosine_similarity",
+        "mean_absolute_error",
+        "mean_squared_error",
+    ],
 ):
     # build and compile the model
     # I wish we had a nice monad here
-    model = tf.keras.Input(shape=(540, 420, 1))
-    model = encode(model, convolution_kernel_shape, model_size)
-    model = downsample_dropout(model)
-    model = decode(model, convolution_kernel_shape, model_size)
-    model = upsample(model)
+    input_layer = tf.keras.Input(shape=(420, 540, 1))
+    l1 = encode(input_layer, convolution_kernel_shape, model_size)
+    l2 = downsample_dropout(l1)
+    l3 = decode(l2, convolution_kernel_shape, model_size)
+    l4 = upsample(l3)
     final_conv = Conv2D(1, (3, 3), activation="sigmoid", padding="same")
-    model = final_conv(model)
-
-    return model.compile(optimizer="adam", loss_function=loss_function, metrics=loss_function)
+    output = final_conv(l4)
+    model = Model(inputs=input_layer, outputs=output)
+    model.summary()
+    model.compile(optimizer="adam", loss=loss_function, metrics=[loss_function])
+    return model

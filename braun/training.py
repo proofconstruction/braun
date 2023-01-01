@@ -36,7 +36,11 @@ def generate_training_instances(
     callback,
 ):
     training_instances = []
-    for loss_function in ["cosine_similarity", "mean_absolute_error", "mean_squared_error"]:
+    for loss_function in [
+        "cosine_similarity",
+        "mean_absolute_error",
+        "mean_squared_error",
+    ]:
 
         small, medium, large = build_SML_models(convolution_kernel_shape, loss_function)
 
@@ -74,7 +78,7 @@ def generate_training_instances(
     return training_instances
 
 
-class ConvNetModelInstance(Model):
+class ConvNetModelInstance:
     def __init__(
         self,
         convolution_kernel_shape,
@@ -84,13 +88,17 @@ class ConvNetModelInstance(Model):
         self.loss_function = loss_function
         self.callback_function = loss_function
         self.model_size = model_size
-        self.model = convnet_denoiser(convolution_kernel_shape, model_size, loss_function)
+        self.model = convnet_denoiser(
+            convolution_kernel_shape,
+            model_size,
+            loss_function,
+        )
 
 
-class TrainingInstance(Model):
+class TrainingInstance(ConvNetModelInstance):
     def __init__(
         self,
-        model: ConvNetModelInstance,
+        model_instance: ConvNetModelInstance,
         training_provenance: str,
         callback: Callable,
         training_images: List,
@@ -100,10 +108,10 @@ class TrainingInstance(Model):
         epochs: int,
         batch_size: int,
     ):
-        self.model = model.model
+        self.model = model_instance.model
         self.training_provenance = training_provenance
-        self.model_size = model.model_size
-        self.loss_function = model.loss_function
+        self.model_size = model_instance.model_size
+        self.loss_function = model_instance.loss_function
         self.training_images = training_images
         self.groundtruth_images = groundtruth_images
         self.training_images_count = training_images_count

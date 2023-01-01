@@ -35,7 +35,10 @@ def build_directories_and_copy_noisy_data():
 
     for groundtruth_image in sorted(os.listdir(cleanpath)):
         if os.path.isfile(cleanpath / groundtruth_image):
-            shutil.copyfile(cleanpath / groundtruth_image, gt_img_path / groundtruth_image)
+            shutil.copyfile(
+                cleanpath / groundtruth_image,
+                gt_img_path / groundtruth_image,
+            )
 
     for training_image in sorted(os.listdir(trainpath)):
         if os.path.isfile(trainpath / training_image):
@@ -47,7 +50,7 @@ def build_directories_and_copy_noisy_data():
 
 
 def file_setup():
-    download_and_extract_noisyoffice()
+    # download_and_extract_noisyoffice()
     build_directories_and_copy_noisy_data()
 
 
@@ -73,7 +76,11 @@ def generate_imageset_names(groundtruth_duplication_factor: int = 4):
     return training_images_names, groundtruth_images_names, validation_images_names
 
 
-def generate_and_preprocess_imagesets(training_images_names, groundtruth_images_names, validation_images_names):
+def generate_and_preprocess_imagesets(
+    training_images_names,
+    groundtruth_images_names,
+    validation_images_names,
+):
     # preprocessed images
     training_images = []
     groundtruth_images = []

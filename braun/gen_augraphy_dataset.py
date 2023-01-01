@@ -7,6 +7,8 @@ from augraphy import AugraphyPipeline
 from augraphy import BadPhotoCopy
 from augraphy import PencilScribbles
 
+from braun.preprocessing import grayscale_and_normalize
+
 
 def apply_pipeline(quad):
     i = 1 + (quad[0] % 4)
@@ -53,7 +55,7 @@ def generate_training_images_augraphy():
     output_path = Path("/content/training_images_augraphy")
     # build the image list again
     training_images_augraphy = [
-        cv2.imread((output_path / filename).as_posix()) for filename in sorted(os.listdir(output_path))
+        grayscale_and_normalize((output_path / filename)) for filename in sorted(os.listdir(output_path))
     ]
 
     return training_images_augraphy

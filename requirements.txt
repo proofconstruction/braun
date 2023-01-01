@@ -1,3 +1,5 @@
 augraphy
 matplotlib
+scikit-image
+scikit-learn
 tensorflow

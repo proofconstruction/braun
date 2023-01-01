@@ -115,7 +115,9 @@ def get_pipeline():
     lightinggradient_max_brightness = 196
     lightinggradient_min_brightness = 0
     # LightingGradient.mode is linear or gaussian depending on how light should decay
-    lightinggradient_mode = random.choice(["linear_dynamic", "linear_static", "gaussian"])
+    lightinggradient_mode = random.choice(
+        ["linear_dynamic", "linear_static", "gaussian"],
+    )
     # LightingGradient.linear_decay_rate is only valid in linear static mode
     lightinggradient_linear_decay_rate = None
     # LightingGradient.transparency gives the transparency of the input image
@@ -183,7 +185,9 @@ def get_pipeline():
     # BindingsAndFasteners.foreground is the path to fg image or the image itself
     bindingsandfasteners_foreground = None
     # BindingsAndFasteners.effect_type is "punch_holes", "binding_holes", or "clips"
-    bindingsandfasteners_effect_type = random.choice(["punch_holes", "binding_holes", "clips"])
+    bindingsandfasteners_effect_type = random.choice(
+        ["punch_holes", "binding_holes", "clips"],
+    )
     # BindingsAndFasteners.ntimes gives how many fg images to draw
     bindingsandfasteners_ntimes = (10, 20) if bindingsandfasteners_effect_type == "binding_holes" else (2, 3)
     # BindingsAndFasteners.nscales is the scale of the fg image size

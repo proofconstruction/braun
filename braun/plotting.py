@@ -37,13 +37,31 @@ def plot_traininginstance_loss_and_error(training_instance: TrainingInstance):
 
     plt.figure(figsize=(20, 6), dpi=600)
     plt.subplot(1, 2, 1)
-    plt.plot(range(0, len(epoch_loss)), epoch_loss, "b-", linewidth=2, label="Train Loss")
-    plt.plot(range(0, len(epoch_val_loss)), epoch_val_loss, "r-", linewidth=2, label="Validation Loss")
+    plt.plot(
+        range(0, len(epoch_loss)),
+        epoch_loss,
+        "b-",
+        linewidth=2,
+        label="Train Loss",
+    )
+    plt.plot(
+        range(0, len(epoch_val_loss)),
+        epoch_val_loss,
+        "r-",
+        linewidth=2,
+        label="Validation Loss",
+    )
     plt.title("Evolution of loss on train & validation datasets over epochs")
     plt.legend(loc="best")
 
     plt.subplot(1, 2, 2)
-    plt.plot(range(0, len(epoch_error)), epoch_error, "b-", linewidth=2, label=f"Train {error_type.upper()}")
+    plt.plot(
+        range(0, len(epoch_error)),
+        epoch_error,
+        "b-",
+        linewidth=2,
+        label=f"Train {error_type.upper()}",
+    )
     plt.plot(
         range(0, len(epoch_val_error)),
         epoch_val_error,
