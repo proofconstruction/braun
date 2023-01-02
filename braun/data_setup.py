@@ -54,7 +54,7 @@ def file_setup():
     build_directories_and_copy_noisy_data()
 
 
-def generate_imageset_names(groundtruth_duplication_factor: int = 4):
+def generate_imageset_names():
 
     # filenames lists
     training_images_names = sorted(
@@ -65,13 +65,9 @@ def generate_imageset_names(groundtruth_duplication_factor: int = 4):
         [val_img_path / filename for filename in val_img_path.iterdir() if filename.is_file()],
     )
 
-    # duplicate the ground truths 4x; we only have 18 unique groundtruth images and need 72
-    groundtruth_images_names = []
-    for groundtruth_image in sorted(
+    groundtruth_images_names = sorted(
         [gt_img_path / filename for filename in gt_img_path.iterdir() if filename.is_file()],
-    ):
-        for _ in range(groundtruth_duplication_factor):
-            groundtruth_images_names.append(groundtruth_image)
+    )
 
     return training_images_names, groundtruth_images_names, validation_images_names
 
