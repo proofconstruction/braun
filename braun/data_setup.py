@@ -29,9 +29,9 @@ def build_directories_and_copy_noisy_data():
         path.mkdir()
 
     # copy NoisyOffice data where we need
-    cleanpath = base_path / "/denoising_dirty_documents/train_cleaned"
-    trainpath = base_path / "/denoising_dirty_documents/train"
-    valpath = base_path / "/denoising_dirty_documents/test"
+    cleanpath = base_path / "denoising_dirty_documents/train_cleaned"
+    trainpath = base_path / "denoising_dirty_documents/train"
+    valpath = base_path / "denoising_dirty_documents/test"
 
     for groundtruth_image in sorted(os.listdir(cleanpath)):
         if os.path.isfile(cleanpath / groundtruth_image):
